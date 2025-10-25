@@ -45,6 +45,18 @@
         border-radius: 4px;
         border: 1px solid #ffffff0a;
     }
+    .item__choose-image{
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        height: 100%;
+        width: 100%;
+    }
+    .item__choose-image img{
+        max-width: 60%;
+        height: auto;
+        margin: auto 0px;
+    }
     .item__choose-right__block{
         width: 50%;
         padding: 20px;
