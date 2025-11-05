@@ -18,15 +18,17 @@
     loading.value = true;
     error.value = null;
     
-    try {
-        axios.get('https://fakestoreapi.com/products').then((response) => {
+    //Загрузка данных с внешнего ресурса
+    axios.get('https://fakestoreapi.com/products')
+        .then((response) => {
             catalogItems.splice(0, catalogItems.length, ...response.data);
+        }) 
+        .catch((err) => {
+            error.value = 'Ошибка при загрузке данных: ' + err.message;
+        })
+        .finally(() => {
+            loading.value = false;
         });
-    } catch (err) {
-        error.value = 'Ошибка при загрузке данных: ' + err.message;
-    } finally {
-        loading.value = false;
-    }
 
     //Элемент каталога для показа
     const itemCatalogChoose = ref('');
@@ -49,13 +51,15 @@
 
     //Функция поиска
     function searchBlock(event){
-        if(event.price){
-            itemCatalogSerarch.value = event.price;
-            itemCatalogChoose.value = catalogItems.find((t) => t.price == itemCatalogSerarch.value);
-        } else {
-            itemCatalogSerarch.value = event.title;
-            console.log(event.title);
-            itemCatalogChoose.value = catalogItems.find((t) => t.title == itemCatalogSerarch.value);
+        switch(event.typeSearch){
+            case "title":
+                itemCatalogSerarch.value = event.title.trim();
+                itemCatalogChoose.value = catalogItems.find((t) => t.title == itemCatalogSerarch.value);
+                break;
+            case 'price':            
+                itemCatalogSerarch.value = event.price;
+                itemCatalogChoose.value = catalogItems.find((t) => t.price == itemCatalogSerarch.value);
+                break;
         }
     }
 
